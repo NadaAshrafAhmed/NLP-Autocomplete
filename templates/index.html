@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+
+    <title>NLP</title>
+
+    <style>
+
+        div#searchBar{
+            width: 550px;
+            left: 400px;
+            top: 200px;
+            position: absolute;
+        }
+
+        input#ajax{
+
+            width:550px;
+            height:30px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div id="searchBar">
+
+        <input type="text" id="ajax" list="datalist" placeholder="" oninput="sendajax()" dir="rtl" >
+        <!--<div id="options">-->
+        <datalist id='datalist'></datalist>
+        <!--</div>-->
+    </div>
+
+    <script>
+
+        function sendajax()
+        {
+            var input = document.getElementById("ajax").value ;
+
+            input+="."
+            var dataList = document.getElementById('datalist');
+
+            var xmlhttp = new XMLHttpRequest();
+
+            xmlhttp.open("GET",encodeURI("fill/"+input),true);
+            xmlhttp.send();
+
+            xmlhttp.onreadystatechange=function()
+            {
+                if (xmlhttp.readyState==4 && xmlhttp.status==200)
+                {
+                   document.getElementById("datalist").innerHTML="";
+                   var res = JSON.parse(xmlhttp.responseText);
+                   res.forEach(function(item)
+                   {
+
+                       var option = document.createElement('option');
+                       option.value = item
+                       dataList.appendChild(option);
+
+                   })
+                }
+            }
+
+        }
+
+    </script>
+
+
+</body>
+
+</html>
